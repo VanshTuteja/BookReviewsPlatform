@@ -1,4 +1,6 @@
-# Book Review Platform (MERN Stack)
+# Book Review Platform (MERN Stack) 
+
+Live Now : https://bookreview-jtkk.onrender.com
 
 A full-stack Book Review Platform built with **MongoDB, Express, React, Node.js (MERN)**. Users can sign up, log in, add books, and review them. This project demonstrates authentication, CRUD operations, frontend-backend integration, and proper database schema design.
 
