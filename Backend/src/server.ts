@@ -14,12 +14,15 @@ import reviewRoutes from './routes/reviewRoutes';
 import userRoutes from './routes/userRoutes';
 import { errorHandler } from './middleware/errorHandler';
 import logger from './utils/logger';
+import path from 'path';
 
 // Load environment variables
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+const DIRNAME = path.resolve();
 
 // Security middleware
 app.use(helmet());
@@ -100,14 +103,6 @@ app.get('/api/health', (req, res) => {
 // Error handling middleware
 app.use(errorHandler);
 
-// 404 handler
-app.use('*', (req, res) => {
-  logger.warn('Route not found', { path: req.originalUrl, method: req.method });
-  res.status(404).json({ 
-    success: false,
-    message: 'Route not found' 
-  });
-});
 
 // Graceful shutdown
 process.on('SIGTERM', () => {
@@ -118,6 +113,11 @@ process.on('SIGTERM', () => {
 process.on('SIGINT', () => {
   logger.info('SIGINT received, shutting down gracefully');
   process.exit(0);
+});
+
+app.use(express.static(path.join(DIRNAME,"/frontend/dist")));
+app.use("*",(_,res) => {
+    res.sendFile(path.resolve(DIRNAME, "frontend","dist","index.html"));
 });
 
 // Start server
